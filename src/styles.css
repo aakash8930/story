@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-grot: "Space Grotesk", ui-monospace, monospace;
+
+  --color-ink: #0b0a08;
+  --color-coal: #0a0908;
+  --color-cream: #ece5d8;
+  --color-gold: #c8a24a;
+  --color-gold-bright: #e3c576;
+}
+
+html {
+  background: #0b0a08;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+}
+
+::selection {
+  background: #c8a24a;
+  color: #0b0a08;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0a08;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 162, 74, 0.4);
+}
+
+/* --- slow breathing of imagery --- */
+.kenburns {
+  animation: kenburns 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.14) translate(-1.2%, 1%);
+  }
+}
+
+/* --- marquee strips --- */
+.marquee {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --- film grain --- */
+.grain {
+  animation: grain 1.4s steps(8) infinite;
+}
+@keyframes grain {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  12.5% {
+    transform: translate3d(-1.5%, 1%, 0);
+  }
+  25% {
+    transform: translate3d(1%, -1.5%, 0);
+  }
+  37.5% {
+    transform: translate3d(-1%, -1%, 0);
+  }
+  50% {
+    transform: translate3d(1.5%, 1%, 0);
+  }
+  62.5% {
+    transform: translate3d(-1.5%, 0.5%, 0);
+  }
+  75% {
+    transform: translate3d(0.5%, 1.5%, 0);
+  }
+  87.5% {
+    transform: translate3d(1%, -0.5%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --- hero scroll cue --- */
+.scroll-line {
+  animation: scrollline 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes scrollline {
+  0% {
+    transform: translateY(-100%);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* --- watch dial hands --- */
+.rot {
+  transform-origin: 200px 200px;
+  animation-name: rot;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes rot {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns,
+  .marquee,
+  .grain,
+  .scroll-line,
+  .rot {
+    animation: none;
+  }
+}
