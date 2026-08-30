@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 import { EASE, FadeUp, KenBurns, MaskText } from '../lib/kit.jsx'
+import Watch3D from '../components/Watch3D.jsx'
 
 /** Slow-drifting warm dust, canvas-rendered. */
 function Dust() {
@@ -97,15 +98,15 @@ function Stamp({ ready }) {
 export default function Hero({ ready }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const yImg = useTransform(scrollYProgress, [0, 1], [0, 130])
+  const yImg = useTransform(scrollYProgress, [0, 1], [0, 110])
   const yText = useTransform(scrollYProgress, [0, 1], [0, -120])
   const fade = useTransform(scrollYProgress, [0, 0.55], [1, 0])
 
-  // pointer parallax — image drifts against the cursor, content with it
+  // pointer parallax — the 3D stage drifts against the cursor
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
-  const imgX = useSpring(useTransform(mx, (v) => v * -28), { stiffness: 55, damping: 18 })
-  const imgY = useSpring(useTransform(my, (v) => v * -18), { stiffness: 55, damping: 18 })
+  const imgX = useSpring(useTransform(mx, (v) => v * -16), { stiffness: 55, damping: 18 })
+  const imgY = useSpring(useTransform(my, (v) => v * -10), { stiffness: 55, damping: 18 })
   const txtX = useSpring(useTransform(mx, (v) => v * 16), { stiffness: 80, damping: 20 })
   const txtY = useSpring(useTransform(my, (v) => v * 10), { stiffness: 80, damping: 20 })
   const yImgAll = useTransform([yImg, imgY], ([a, b]) => a + b)
@@ -123,12 +124,19 @@ export default function Hero({ ready }) {
       id="hero"
       ref={ref}
       onMouseMove={onMove}
-      className="relative flex h-svh min-h-[620px] flex-col overflow-hidden bg-ink"
+      className="relative flex h-svh min-h-[640px] flex-col overflow-hidden bg-[#070605]"
     >
       <motion.div className="absolute -inset-[3%]" style={{ x: imgX, y: yImgAll }}>
-        <KenBurns src="/images/hero.jpg" alt="A Meridian dial under low golden light" className="h-full w-full" />
+        {/* faint photographic base for cinematic depth */}
+        <div className="absolute inset-0 opacity-40">
+          <KenBurns src="/images/hero.jpg" alt="A Meridian dial under low golden light" className="h-full w-full" />
+        </div>
+        {/* warm pool of light behind the watch */}
+        <div className="pointer-events-none absolute -right-[12%] top-1/2 h-[75vh] w-[62vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.10),transparent_62%)]" />
+        {/* the live 3D timepiece */}
+        <Watch3D />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/15 to-ink" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#070605]/75 via-transparent to-ink" />
       <Dust />
       <Stamp ready={ready} />
 
@@ -153,8 +161,11 @@ export default function Hero({ ready }) {
         <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <FadeUp when={ready} delay={1.45} className="max-w-md">
             <p className="text-sm leading-relaxed text-cream/70">
-              For one hundred and seventy-nine years, the Maison Meridian has built mechanical timepieces by hand in the
-              city of water — one dial, one bridge, one heartbeat at a time.
+              For one hundred and seventy-nine years, the Maison Meridian has built mechanical timepieces by hand in
+              the city of water — one dial, one bridge, one heartbeat at a time.
+            </p>
+            <p className="mt-4 font-serif text-sm italic text-cream/45">
+              The timepiece above is alive — it is keeping your local time, right now.
             </p>
           </FadeUp>
           <FadeUp when={ready} delay={1.6} className="flex items-center gap-4">

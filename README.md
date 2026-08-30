@@ -5,7 +5,7 @@ A premium, scroll-driven storytelling website for a fictional Swiss watchmaking 
 
 | Chapter | Effect |
 |---|---|
-| Prologue | Preloader with 0000→2026 counter, word-mask title reveal, Ken Burns hero, scroll parallax |
+| Prologue | Preloader with 0000→2026 counter, word-mask title reveal, **live 3D Meridian watch (Three.js) as the animated background** — turntable sway, mouse tilt, floating dust, rotating stamp; the watch hands keep the visitor's real local time |
 | I — The Foundry | Sticky two-column editorial, drop cap, parallax archive photography, pull quote |
 | II — The Craft | Pinned, stacked full-screen steps that slide over one another (guilloché → polishing → assembly → observation) |
 | III — The Movement | Animated SVG dial with live hands, count-up spec counters |
@@ -23,6 +23,7 @@ scramble-decode chapter labels, marquee strips, right-hand chapter rail, `mix-bl
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [Framer Motion](https://www.framer.com/motion/) (scroll transforms, reveals)
 - [Lenis](https://github.com/darkroomengineering/lenis) (smooth scroll)
+- [Three.js](https://threejs.org/) (live procedural 3D watchhead — case, faceted bezel, guilloché dial texture, applied indices, real-time hands, crown, straps)
 - Cormorant Garamond / Inter / Space Grotesk via Google Fonts
 
 ## Run
