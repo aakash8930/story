@@ -1,4 +1,4 @@
-import { FadeUp, MaskText, ScrambleText } from '../lib/kit.jsx'
+import { FadeUp, MaskText, ScrambleText, Tilt } from '../lib/kit.jsx'
 
 const WATCHES = [
   {
@@ -50,7 +50,8 @@ export default function Collection() {
         <div className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-3 md:gap-10">
           {WATCHES.map((w, i) => (
             <FadeUp key={w.name} delay={0.1 * i}>
-              <article className="group cursor-pointer" data-cursor="View">
+              <Tilt max={7}>
+                <article className="group cursor-pointer" data-cursor="View">
                 <div className="relative overflow-hidden bg-[#141210]">
                   <img
                     src={w.img}
@@ -77,7 +78,8 @@ export default function Collection() {
                     </p>
                   </div>
                 </div>
-              </article>
+                </article>
+              </Tilt>
             </FadeUp>
           ))}
         </div>

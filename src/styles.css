@@ -60,6 +60,28 @@ body {
     transform: translateX(-50%);
   }
 }
+.marquee-wrap:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* --- rotating stamp & breathing glow --- */
+.spin-slow {
+  animation: rot 26s linear infinite;
+}
+.glow-breathe {
+  animation: glowbreathe 8s ease-in-out infinite;
+}
+@keyframes glowbreathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+    opacity: 1;
+  }
+}
 
 /* --- film grain --- */
 .grain {

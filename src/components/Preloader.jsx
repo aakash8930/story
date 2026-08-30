@@ -68,7 +68,16 @@ export default function Preloader({ onDone }) {
           <br />
           of time
         </p>
-        <p className="font-grot text-2xl tracking-[0.2em] text-gold tabular-nums md:text-4xl">{digits}</p>
+        <div className="flex items-center gap-3">
+          <svg viewBox="0 0 24 24" className="h-6 w-6 text-gold" aria-hidden>
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
+            <g className="rot" style={{ animationDuration: '2.4s', transformOrigin: '12px 12px' }}>
+              <line x1="12" y1="12" x2="12" y2="4.6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </g>
+            <circle cx="12" cy="12" r="1.2" fill="currentColor" />
+          </svg>
+          <p className="font-grot text-2xl tracking-[0.2em] text-gold tabular-nums md:text-4xl">{digits}</p>
+        </div>
       </div>
     </motion.div>
   )

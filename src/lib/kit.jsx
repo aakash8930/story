@@ -180,14 +180,24 @@ export function Magnetic({ children, className = '', strength = 0.35 }) {
   )
 }
 
-/** Image that parallaxes through the viewport. */
-export function Parallax({ src, alt, className = '', imgClassName = '', strength = 8 }) {
+/** Image that parallaxes through the viewport; `reveal` adds an iris clip-path entrance. */
+export function Parallax({ src, alt, className = '', imgClassName = '', strength = 8, reveal = false }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], [`${strength}%`, `${-strength}%`])
+  const revealProps = reveal
+    ? {
+        initial: { clipPath: 'inset(14% 10% 14% 10%)' },
+        whileInView: { clipPath: 'inset(0% 0% 0% 0%)' },
+        viewport: { once: true, margin: '-10% 0px' },
+        transition: { duration: 1.5, ease: EASE },
+      }
+    : {}
   return (
     <div ref={ref} className={'overflow-hidden ' + className}>
-      <motion.img src={src} alt={alt} className={'h-full w-full object-cover ' + imgClassName} style={{ y }} />
+      <motion.div className="h-full w-full" {...revealProps}>
+        <motion.img src={src} alt={alt} className={'h-full w-full object-cover ' + imgClassName} style={{ y }} />
+      </motion.div>
     </div>
   )
 }
@@ -201,6 +211,53 @@ export function KenBurns({ src, alt, className = '', imgClassName = '' }) {
   )
 }
 
+/** Hairline that draws itself in. */
+export function LineDraw({ className = '', delay = 0 }) {
+  return (
+    <motion.span
+      className={`block h-px origin-left ${className}`}
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: 1.2, ease: EASE, delay }}
+    />
+  )
+}
+
+/** 3D tilt that follows the cursor. */
+export function Tilt({ children, className = '', max = 8 }) {
+  const ref = useRef(null)
+  const rx = useMotionValue(0)
+  const ry = useMotionValue(0)
+  const srx = useSpring(rx, { stiffness: 160, damping: 18, mass: 0.4 })
+  const sry = useSpring(ry, { stiffness: 160, damping: 18, mass: 0.4 })
+
+  const onMove = (e) => {
+    if (!ref.current) return
+    const r = ref.current.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width - 0.5
+    const py = (e.clientY - r.top) / r.height - 0.5
+    ry.set(px * max)
+    rx.set(-py * max)
+  }
+  const onLeave = () => {
+    rx.set(0)
+    ry.set(0)
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ rotateX: srx, rotateY: sry, transformPerspective: 900 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 /** Infinite edge-to-edge text strip. */
 export function Marquee({ items, className = '' }) {
   const row = items.map((t, i) => (
@@ -210,7 +267,7 @@ export function Marquee({ items, className = '' }) {
     </span>
   ))
   return (
-    <div className={'relative overflow-hidden py-5 ' + className} aria-hidden>
+    <div className={'marquee-wrap relative overflow-hidden py-5 ' + className} aria-hidden>
       <div className="marquee flex w-max items-center">
         <div className="flex items-center">{row}</div>
         <div className="flex items-center">{row}</div>

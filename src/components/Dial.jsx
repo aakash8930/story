@@ -1,8 +1,19 @@
+import { motion } from 'framer-motion'
+
 const TICKS = Array.from({ length: 60 }, (_, i) => i)
 
-export default function Dial() {
+/**
+ * Animated maison dial. The hands are driven by MotionValues (scroll-linked);
+ * the dashed inner ring keeps a slow idle rotation via CSS.
+ */
+export default function Dial({ hourRot, minuteRot, secondRot }) {
   return (
-    <svg viewBox="0 0 400 400" className="mx-auto w-full max-w-[520px]" role="img" aria-label="Meridian calibre dial, animated">
+    <svg
+      viewBox="0 0 400 400"
+      className="mx-auto w-full max-w-[520px]"
+      role="img"
+      aria-label="Meridian calibre dial, hands driven by scroll"
+    >
       <defs>
         <radialGradient id="dialbg" cx="50%" cy="42%" r="70%">
           <stop offset="0%" stopColor="#151310" />
@@ -62,22 +73,16 @@ export default function Dial() {
         MANUFACTURE · 1847
       </text>
 
-      <g transform="rotate(305 200 200)">
-        <g className="rot" style={{ animationDuration: '10800s' }}>
-          <line x1="200" y1="200" x2="200" y2="128" stroke="#e9e1cf" strokeWidth="5" strokeLinecap="round" />
-        </g>
-      </g>
-      <g transform="rotate(145 200 200)">
-        <g className="rot" style={{ animationDuration: '1200s' }}>
-          <line x1="200" y1="200" x2="200" y2="92" stroke="#e9e1cf" strokeWidth="3" strokeLinecap="round" />
-        </g>
-      </g>
-      <g transform="rotate(95 200 200)">
-        <g className="rot" style={{ animationDuration: '60s' }}>
-          <line x1="200" y1="216" x2="200" y2="84" stroke="#c8a24a" strokeWidth="1.4" strokeLinecap="round" />
-          <circle cx="200" cy="216" r="4" fill="#c8a24a" />
-        </g>
-      </g>
+      <motion.g style={{ rotate: hourRot, transformOrigin: '200px 200px' }}>
+        <line x1="200" y1="200" x2="200" y2="128" stroke="#e9e1cf" strokeWidth="5" strokeLinecap="round" />
+      </motion.g>
+      <motion.g style={{ rotate: minuteRot, transformOrigin: '200px 200px' }}>
+        <line x1="200" y1="200" x2="200" y2="92" stroke="#e9e1cf" strokeWidth="3" strokeLinecap="round" />
+      </motion.g>
+      <motion.g style={{ rotate: secondRot, transformOrigin: '200px 200px' }}>
+        <line x1="200" y1="216" x2="200" y2="84" stroke="#c8a24a" strokeWidth="1.4" strokeLinecap="round" />
+        <circle cx="200" cy="216" r="4" fill="#c8a24a" />
+      </motion.g>
 
       <circle cx="200" cy="200" r="6" fill="#c8a24a" />
       <circle cx="200" cy="200" r="2.4" fill="#070605" />

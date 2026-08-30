@@ -1,4 +1,4 @@
-import { FadeUp, MaskText, Parallax, ScrambleText } from '../lib/kit.jsx'
+import { FadeUp, LineDraw, MaskText, Parallax, ScrambleText } from '../lib/kit.jsx'
 
 export default function Heritage() {
   return (
@@ -30,7 +30,7 @@ export default function Heritage() {
               </FadeUp>
 
               <FadeUp delay={0.4} className="mt-10 flex items-center gap-4">
-                <span className="h-px w-10 bg-ink/30" />
+                <LineDraw className="w-10 bg-ink/30" />
                 <span className="font-serif text-2xl italic">Émile Vasseur</span>
                 <span className="font-grot text-[9px] tracking-[0.3em] text-ink/45">FOUNDER · 1847</span>
               </FadeUp>
@@ -44,6 +44,7 @@ export default function Heritage() {
                 alt="Émile Vasseur at the lathe, circa 1849"
                 className="aspect-[4/5] w-full md:w-[76%]"
                 strength={7}
+                reveal
               />
               <FadeUp delay={0.2}>
                 <p className="mt-4 font-grot text-[9px] tracking-[0.28em] text-ink/45">
@@ -57,6 +58,7 @@ export default function Heritage() {
                 alt="The Meridian atelier today"
                 className="aspect-[3/2] w-full md:w-[88%]"
                 strength={7}
+                reveal
               />
               <FadeUp delay={0.2}>
                 <p className="mt-4 font-grot text-[9px] tracking-[0.28em] text-ink/45">
@@ -68,6 +70,7 @@ export default function Heritage() {
         </div>
 
         <div className="mx-auto mt-28 max-w-4xl md:mt-44">
+          <LineDraw className="mb-10 w-20 bg-ink/30" />
           <MaskText
             as="p"
             className="font-serif text-4xl font-light italic leading-[1.18] md:text-6xl"

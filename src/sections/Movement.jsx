@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Dial from '../components/Dial.jsx'
 import { Counter, FadeUp, MaskText, ScrambleText } from '../lib/kit.jsx'
 
@@ -17,9 +18,17 @@ const SPECS = [
 ]
 
 export default function Movement() {
+  const ref = useRef(null)
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+
+  // the watch is wound by your scroll
+  const hourRot = useTransform(p, [0, 1], [305, 332])
+  const minuteRot = useTransform(p, [0, 1], [145, 268])
+  const secondRot = useTransform(p, [0, 1], [95, 818])
+
   return (
-    <section id="movement" className="relative overflow-hidden bg-[#070605] py-28 md:py-40">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.07),transparent_65%)]" />
+    <section id="movement" ref={ref} className="relative overflow-hidden bg-[#070605] py-28 md:py-40">
+      <div className="glow-breathe pointer-events-none absolute left-1/2 top-1/2 h-[70vw] w-[70vw] rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.07),transparent_65%)]" />
 
       <div className="relative mx-auto max-w-[1400px] px-6 md:px-14">
         <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -61,10 +70,10 @@ export default function Movement() {
               viewport={{ once: true, margin: '-10% 0px' }}
               transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Dial />
+              <Dial hourRot={hourRot} minuteRot={minuteRot} secondRot={secondRot} />
             </motion.div>
             <p className="mt-8 text-center font-grot text-[10px] tracking-[0.3em] text-cream/35">
-              CAL. MV-19 — DRAWN 1849 · RE-ENGRAVED 2026
+              CAL. MV-19 — THE HANDS FOLLOW YOUR JOURNEY
             </p>
           </div>
         </div>

@@ -32,9 +32,10 @@ export default function Nav({ ready, onNav }) {
             <button
               key={id}
               onClick={() => onNav(id)}
-              className="font-grot text-[10px] uppercase tracking-[0.3em] text-white/60 transition-colors duration-300 hover:text-white"
+              className="group relative font-grot text-[10px] uppercase tracking-[0.3em] text-white/60 transition-colors duration-300 hover:text-white"
             >
               {label}
+              <span className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-white transition-transform duration-500 ease-out group-hover:scale-x-100" />
             </button>
           ))}
         </nav>

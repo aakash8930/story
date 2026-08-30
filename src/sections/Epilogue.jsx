@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { FadeUp, Magnetic, MaskText } from '../lib/kit.jsx'
+import { useRef, useState } from 'react'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { FadeUp, LineDraw, Magnetic, MaskText } from '../lib/kit.jsx'
 
 const LINKS = [
   ['Prologue', 'hero'],
@@ -12,12 +13,28 @@ const LINKS = [
 
 export default function Epilogue({ onNav }) {
   const [sent, setSent] = useState(false)
+  const ref = useRef(null)
+  const gx = useMotionValue(-500)
+  const gy = useMotionValue(-500)
+  const sgx = useSpring(gx, { stiffness: 110, damping: 20 })
+  const sgy = useSpring(gy, { stiffness: 110, damping: 20 })
+
+  const onMove = (e) => {
+    if (!ref.current) return
+    const r = ref.current.getBoundingClientRect()
+    gx.set(e.clientX - r.left)
+    gy.set(e.clientY - r.top)
+  }
 
   return (
-    <section id="epilogue" className="relative overflow-hidden bg-ink">
+    <section id="epilogue" ref={ref} onMouseMove={onMove} className="relative overflow-hidden bg-ink">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[80vh] w-[130vw] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(200,162,74,0.08),transparent_60%)]" />
+      <motion.div
+        style={{ x: sgx, y: sgy }}
+        className="pointer-events-none absolute -left-[260px] -top-[260px] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.09),transparent_60%)]"
+      />
 
-      <div className="relative mx-auto max-w-[1400px] px-6 pt-28 md:px-14 md:pt-44">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 pt-28 md:px-14 md:pt-44">
         <p className="font-grot text-[10px] uppercase tracking-[0.45em] text-gold/80">CH. 06 — EPILOGUE</p>
         <MaskText
           as="h2"
@@ -35,8 +52,10 @@ export default function Epilogue({ onNav }) {
             </p>
           </FadeUp>
 
+          <LineDraw className="mb-8 mt-10 w-16 bg-gold/50" />
+
           <form
-            className="mt-10"
+            className="mt-0"
             onSubmit={(e) => {
               e.preventDefault()
               setSent(true)

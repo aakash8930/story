@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { MaskText, ScrambleText } from '../lib/kit.jsx'
+import { EASE, MaskText, ScrambleText } from '../lib/kit.jsx'
 
 const EVENTS = [
   {
@@ -73,12 +73,16 @@ export default function Timeline({ onNav }) {
 
         <motion.div
           ref={trackRef}
-          style={{ x }}
+          style={{ x, transformPerspective: 1000 }}
           className="flex w-max items-stretch gap-6 pl-6 pr-[10vw] md:gap-10 md:pl-14"
         >
           {EVENTS.map((e, i) => (
-            <article
+            <motion.article
               key={e.year}
+              initial={{ opacity: 0, y: 44, rotateX: 10 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.9, ease: EASE }}
               className="w-[300px] shrink-0 border border-cream/10 bg-[#12100c] p-7 md:w-[380px] md:p-9"
               data-cursor="Read"
             >
@@ -90,10 +94,16 @@ export default function Timeline({ onNav }) {
               <p className="mt-8 font-grot text-[9px] tracking-[0.3em] text-cream/30">
                 ENTRY {String(i + 1).padStart(2, '0')} / 06 — LEDGER V.
               </p>
-            </article>
+            </motion.article>
           ))}
 
-          <article className="flex w-[300px] shrink-0 flex-col justify-between border border-gold/30 bg-[#12100c] p-7 md:w-[420px] md:p-9">
+          <motion.article
+            initial={{ opacity: 0, y: 44, rotateX: 10 }}
+            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="flex w-[300px] shrink-0 flex-col justify-between border border-gold/30 bg-[#12100c] p-7 md:w-[420px] md:p-9"
+          >
             <p className="font-serif text-3xl font-light italic leading-snug text-cream md:text-4xl">
               The next entry is unwritten.
             </p>
@@ -104,7 +114,7 @@ export default function Timeline({ onNav }) {
             >
               READ THE EPILOGUE — ↓
             </button>
-          </article>
+          </motion.article>
         </motion.div>
 
         <div className="relative mt-12 h-px w-full bg-cream/10 px-6 md:px-14">
