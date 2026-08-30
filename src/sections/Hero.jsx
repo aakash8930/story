@@ -132,7 +132,7 @@ export default function Hero({ ready }) {
           <KenBurns src="/images/hero.jpg" alt="A Meridian dial under low golden light" className="h-full w-full" />
         </div>
         {/* warm pool of light behind the watch */}
-        <div className="pointer-events-none absolute -right-[12%] top-1/2 h-[75vh] w-[62vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.10),transparent_62%)]" />
+        <div className="pointer-events-none absolute -right-[10%] top-1/2 h-[80vh] w-[62vw] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(200,162,74,0.14),transparent_62%)]" />
         {/* the live 3D timepiece */}
         <Watch3D />
       </motion.div>
@@ -188,6 +188,15 @@ export default function Hero({ ready }) {
           1204 GENÈVE
         </p>
       </motion.div>
+
+      <motion.p
+        style={{ opacity: fade }}
+        className="absolute bottom-24 right-6 z-10 hidden text-right font-grot text-[9px] leading-loose tracking-[0.3em] text-gold/60 md:right-14 lg:block"
+      >
+        LIVE 3D — RENDERED IN YOUR BROWSER
+        <br />
+        KEEPING YOUR LOCAL TIME
+      </motion.p>
     </section>
   )
 }

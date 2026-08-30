@@ -96,7 +96,7 @@ export default function Watch3D({ className = '' }) {
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.05
+    renderer.toneMappingExposure = 1.15
     renderer.domElement.style.display = 'block'
     renderer.domElement.style.width = '100%'
     renderer.domElement.style.height = '100%'
@@ -104,7 +104,15 @@ export default function Watch3D({ className = '' }) {
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 60)
-    camera.position.set(0, 0.12, 4.7)
+    camera.position.set(0, 0.1, 4.7)
+
+    // key + warm rim so the gold reads against the dark
+    const keyLight = new THREE.PointLight(0xfff2d9, 26, 0, 2)
+    keyLight.position.set(2.2, 1.4, 3.2)
+    scene.add(keyLight)
+    const rimLight = new THREE.PointLight(0xe3c576, 34, 0, 2)
+    rimLight.position.set(-2.6, 2.2, 2.4)
+    scene.add(rimLight)
 
     const pmrem = new THREE.PMREMGenerator(renderer)
     const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04)
@@ -246,6 +254,8 @@ export default function Watch3D({ className = '' }) {
 
     // ---------- responsive layout ----------
     let baseY = 0
+    let baseCamZ = 4.7
+    const lookTarget = new THREE.Vector3(0.5, 0, 0)
     const layout = () => {
       const w = mount.clientWidth || 1
       const h = mount.clientHeight || 1
@@ -253,21 +263,29 @@ export default function Watch3D({ className = '' }) {
       camera.aspect = w / h
       camera.updateProjectionMatrix()
       if (w < 768) {
+        // phone: watch floats in the upper half, headline lives below
         watch.position.x = 0
-        baseY = -0.3
-        watch.scale.setScalar(0.62)
-        camera.position.z = 5.0
+        baseY = 0.3
+        watch.scale.setScalar(0.55)
+        baseCamZ = 5.2
+        camera.position.set(0, 0.15, baseCamZ)
+        lookTarget.set(0, 0.15, 0)
       } else if (w < 1100) {
-        watch.position.x = 0.9
+        watch.position.x = 0.75
         baseY = 0
-        watch.scale.setScalar(0.85)
-        camera.position.z = 4.8
+        watch.scale.setScalar(0.9)
+        baseCamZ = 4.8
+        camera.position.set(0, 0.1, baseCamZ)
+        lookTarget.set(0.35, 0, 0)
       } else {
-        watch.position.x = 1.12
+        watch.position.x = 0.95
         baseY = 0
-        watch.scale.setScalar(1.02)
-        camera.position.z = 4.7
+        watch.scale.setScalar(1.05)
+        baseCamZ = 4.7
+        camera.position.set(0, 0.1, baseCamZ)
+        lookTarget.set(0.5, 0, 0)
       }
+      camera.lookAt(lookTarget)
     }
     layout()
     window.addEventListener('resize', layout)
@@ -301,6 +319,10 @@ export default function Watch3D({ className = '' }) {
       watch.rotation.y += (ty - watch.rotation.y) * 0.06
       watch.rotation.z = baseTiltZ + Math.sin(t * 0.33) * 0.02
       watch.position.y = baseY + Math.sin(t * 0.7) * 0.05
+
+      // slow cinematic push-pull, like a product film
+      camera.position.z = baseCamZ + Math.sin(t * 0.13) * 0.2
+      camera.lookAt(lookTarget)
 
       // live local time
       const now = new Date()
